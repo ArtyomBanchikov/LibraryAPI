@@ -15,7 +15,7 @@ namespace Library.BLL.Services
         }
         public async Task<BookModel> GetByISBNAsync(int isbn, CancellationToken token)
         {
-            var book = mapper.Map<BookModel>(await repository.GetByISBNAsync(isbn, token));
+            var book = _mapper.Map<BookModel>(await repository.GetByISBNAsync(isbn, token));
 
             return book;
         }
