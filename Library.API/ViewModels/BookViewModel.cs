@@ -14,8 +14,8 @@
 
         public string Genre { get; set; }
 
-        public DateOnly ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
-        public DateOnly TakenDate { get; set; }
+        public DateTime TakenDate { get; set; }
     }
 }
