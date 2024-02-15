@@ -1,5 +1,7 @@
 # LibraryAPI
 
+This is a Crud Wep Api for working with books.
+
 How to run
 1. Download SQL Server:
 https://www.microsoft.com/en-us/sql-server/sql-server-downloads
