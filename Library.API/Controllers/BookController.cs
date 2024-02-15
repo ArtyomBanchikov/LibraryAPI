@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Library.API.ViewModels;
 using Library.BLL.Interfaces;
 using Library.BLL.Models;
@@ -11,7 +12,7 @@ namespace Library.API.Controllers
     public class BookController : GenericController<BookModel, BookViewModel>
     {
         protected new readonly IBookService _service;
-        public BookController(IBookService bookService, IMapper mapper) : base(bookService, mapper)
+        public BookController(IBookService bookService, IMapper mapper, IValidator<BookViewModel> validator) : base(bookService, mapper, validator)
         {
             _service = bookService;
         }
