@@ -8,14 +8,14 @@ namespace Library.BLL.Services
 {
     public class BookService : GenericService<BookModel, BookEntity>, IBookService
     {
-        protected new readonly IBookRepository repository;
+        protected new readonly IBookRepository _repository;
         public BookService(IBookRepository bookRepository, IMapper mapper) : base(bookRepository, mapper)
         {
-            repository = bookRepository;
+            _repository = bookRepository;
         }
-        public async Task<BookModel> GetByISBNAsync(int isbn, CancellationToken token)
+        public async Task<BookModel> GetByISBNAsync(long isbn, CancellationToken token)
         {
-            var book = _mapper.Map<BookModel>(await repository.GetByISBNAsync(isbn, token));
+            var book = _mapper.Map<BookModel>(await _repository.GetByISBNAsync(isbn, token));
 
             return book;
         }
