@@ -1,15 +1,46 @@
+using FluentValidation;
+using Library.API.Middlewares;
+using Library.API.Validators;
+using Library.API.ViewModels;
+using Library.BLL.DI;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "LibraryServer",
+            ValidateAudience = true,
+            ValidAudience = "LibraryClient",
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My JWT library Authentication key")),
+            ValidateIssuerSigningKey = true,
+        };
+    });
+builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<IValidator<BookViewModel>, BookValidator>();
+
+builder.Services.AddBllServices(builder.Configuration);
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddAutoMapper(typeof(Library.API.Mappers.MappingProfile), typeof(Library.BLL.Mappers.MappingProfile));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -18,6 +49,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
