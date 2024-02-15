@@ -1,6 +1,7 @@
 using Library.API.Middlewares;
 using Library.BLL.DI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,7 +24,7 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidAudience = "LibraryClient",
             ValidateLifetime = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LibraryKey")),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My JWT library Authentication key")),
             ValidateIssuerSigningKey = true,
         };
     });
@@ -50,20 +51,6 @@ app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.Map("/login/{username}", (string username) =>
-{
-    var claims = new List<Claim> { new Claim(ClaimTypes.Name, username) };
-
-    var jwt = new JwtSecurityToken(
-            issuer: "LibraryServer",
-            audience: "LibraryClient",
-            claims: claims,
-            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(10)),
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("LibraryKey")), SecurityAlgorithms.HmacSha256));
-
-    return new JwtSecurityTokenHandler().WriteToken(jwt);
-});
 
 app.MapControllers();
 
