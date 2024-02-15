@@ -13,12 +13,13 @@ namespace Library.DAL.EF
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var testBook1 = new BookEntity { Title = "TestBook1", Author = "TestAuthor1", Description = "TestDescription1", Genre = "TestGenre1", ISBN = 1000000000001 };
+            var testBook1 = new BookEntity { Id = 1, Title = "TestBook1", Author = "TestAuthor1", Description = "TestDescription1", Genre = "TestGenre1", ISBN = 1000000000001 };
 
-            var testBook2 = new BookEntity { Title = "TestBook2", Author = "TestAuthor2", Description = "TestDescription2", Genre = "TestGenre2", ISBN = 1000000000002 };
+            var testBook2 = new BookEntity { Id = 2, Title = "TestBook2", Author = "TestAuthor2", Description = "TestDescription2", Genre = "TestGenre2", ISBN = 1000000000002 };
 
             var testBook3 = new BookEntity
             {
+                Id = 3,
                 Title = "TestBook3",
                 Author = "TestAuthor3",
                 Description = "TestDescription3",
@@ -30,6 +31,7 @@ namespace Library.DAL.EF
 
             var testBook4 = new BookEntity
             {
+                Id = 4,
                 Title = "TestBook4",
                 Author = "TestAuthor4",
                 Description = "TestDescription4",
