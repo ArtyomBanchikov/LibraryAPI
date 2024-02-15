@@ -16,8 +16,8 @@ namespace Library.API.Controllers
             _service = bookService;
         }
 
-        [HttpGet("ISBN")]
-        public async Task<BookViewModel> GetByIsbn([FromQuery(Name = "ISBN")] int isbn, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<BookViewModel> GetByISBN([FromQuery(Name = "isbn")] int isbn, CancellationToken cancellationToken)
         {
             var book = await _service.GetByISBNAsync(isbn, cancellationToken);
 
