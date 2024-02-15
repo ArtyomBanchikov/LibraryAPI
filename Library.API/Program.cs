@@ -1,10 +1,10 @@
+using FluentValidation;
 using Library.API.Middlewares;
+using Library.API.Validators;
+using Library.API.ViewModels;
 using Library.BLL.DI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +29,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<IValidator<BookViewModel>, BookValidator>();
 
 builder.Services.AddBllServices(builder.Configuration);
 builder.Services.AddControllers();

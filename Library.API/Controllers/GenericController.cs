@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Library.BLL.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.API.Controllers
@@ -13,11 +14,13 @@ namespace Library.API.Controllers
     {
         protected readonly IGenericService<TModel> _service;
         protected readonly IMapper _mapper;
+        protected readonly IValidator<TViewModel> _validator;
 
-        public GenericController(IGenericService<TModel> service, IMapper mapper)
+        public GenericController(IGenericService<TModel> service, IMapper mapper, IValidator<TViewModel> validator)
         {
             _service = service;
             _mapper = mapper;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -39,6 +42,11 @@ namespace Library.API.Controllers
         [HttpPost]
         public async Task CreateAsync([FromBody] TViewModel tViewModel, CancellationToken cancellationToken)
         {
+            ValidationResult result = await _validator.ValidateAsync(tViewModel);
+            if (!result.IsValid)
+            {
+                throw new InvalidOperationException();
+            }
             var tModel = _mapper.Map<TModel>(tViewModel);
             await _service.CreateAsync(tModel, cancellationToken);
         }
@@ -46,6 +54,11 @@ namespace Library.API.Controllers
         [HttpPut]
         public async Task UpdateAsync(int id, [FromBody] TViewModel tViewModel, CancellationToken cancellationToken)
         {
+            ValidationResult result = await _validator.ValidateAsync(tViewModel);
+            if (!result.IsValid)
+            {
+                throw new InvalidOperationException();
+            }
             var tModel = _mapper.Map<TModel>(tViewModel);
             await _service.UpdateAsync(id, tModel, cancellationToken);
         }
