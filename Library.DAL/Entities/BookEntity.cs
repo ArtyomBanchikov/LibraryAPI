@@ -8,7 +8,7 @@ namespace Library.DAL.Entities
         public int Id { get; set; }
 
         [Required]
-        public int ISBN { get; set; }
+        public long ISBN { get; set; }
 
         [Required]
         public string Title { get; set; }

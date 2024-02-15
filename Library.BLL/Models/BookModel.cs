@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public int ISBN { get; set; }
+        public long ISBN { get; set; }
 
         public string Title { get; set; }
 
