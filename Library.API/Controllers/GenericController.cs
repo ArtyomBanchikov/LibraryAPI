@@ -37,7 +37,6 @@ namespace Library.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task CreateAsync([FromBody] TViewModel tViewModel, CancellationToken cancellationToken)
         {
             var tModel = _mapper.Map<TModel>(tViewModel);
@@ -45,7 +44,6 @@ namespace Library.API.Controllers
         }
 
         [HttpPut]
-        [Authorize]
         public async Task UpdateAsync(int id, [FromBody] TViewModel tViewModel, CancellationToken cancellationToken)
         {
             var tModel = _mapper.Map<TModel>(tViewModel);
@@ -53,7 +51,6 @@ namespace Library.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task DeleteByIdAsync(int id, CancellationToken cancellationToken)
         {
             await _service.DeleteByIdAsync(id, cancellationToken);
